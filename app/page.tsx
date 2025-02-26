@@ -244,19 +244,19 @@ export default function HomePage() {
                                     quote: "SaaSApp has transformed how we manage our business. The analytics features alone have helped us increase revenue by 23% in just three months.",
                                     author: "Sarah Johnson",
                                     position: "CEO, TechStart Inc.",
-                                    avatar: "/api/placeholder/80/80",
+                                    avatar: "https://xsgames.co/randomusers/avatar.php?g=female",
                                 },
                                 {
                                     quote: "The user-friendly interface makes it easy for our entire team to stay on the same page. We've seen a dramatic improvement in our workflow efficiency.",
                                     author: "Michael Rodriguez",
                                     position: "COO, GrowFast Solutions",
-                                    avatar: "/api/placeholder/80/80",
+                                    avatar: "https://xsgames.co/randomusers/avatar.php?g=female",
                                 },
                                 {
                                     quote: "Customer support is exceptional. Any time we've had questions, the team responds quickly and effectively. I can't imagine running our business without SaaSApp now.",
                                     author: "Emily Chen",
                                     position: "Director of Operations, NexGen",
-                                    avatar: "/api/placeholder/80/80",
+                                    avatar: "https://xsgames.co/randomusers/avatar.php?g=female",
                                 },
                             ].map((testimonial, index) => (
                                 <div key={index} className="bg-white rounded-lg shadow-md p-6">
