@@ -2,30 +2,32 @@ import { NextResponse } from 'next/server';
 import { mockUserSubscriptions } from '@/data/mock-subscriptions';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { UserSubscription } from '@/lib/types';
+import { User, UserSubscription } from '@/lib/types';
 
-export async function GET(
-    request: Request,
-    { params }: { params: { userId: string } }
-) {
+export async function GET(request: Request) {
     try {
-        // Check authentication
+        // Отримуємо userId з URL
+        const { pathname } = new URL(request.url);
+        const userId = pathname.split('/').slice(-2, -1)[0]; // Витягуємо userId
+
+        if (!userId) {
+            return NextResponse.json({ error: 'User ID not provided' }, { status: 400 });
+        }
+
+        // Перевірка автентифікації
         const session = await getServerSession(authOptions);
         if (!session) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        // Get user ID from params
-        const { userId } = params;
-
-        // Check if user has access to this subscription
-        const currentUserId = (session.user as any).id;
-        const isAdmin = (session.user as any).role === 'admin';
+        // Перевіряємо доступ
+        const currentUserId = (session.user as User).id;
+        const isAdmin = (session.user as User).role === 'admin';
         if (userId !== currentUserId && !isAdmin) {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
 
-        // Find the user subscription
+        // Знаходимо підписку користувача
         const subscription = mockUserSubscriptions.find(sub => sub.userId === userId);
         if (!subscription) {
             return NextResponse.json({ error: 'Subscription not found' }, { status: 404 });
@@ -38,58 +40,56 @@ export async function GET(
     }
 }
 
-export async function PUT(
-    request: Request,
-    { params }: { params: { userId: string } }
-) {
+export async function PUT(request: Request) {
     try {
-        // Check authentication
+        // Отримуємо userId з URL
+        const { pathname } = new URL(request.url);
+        const userId = pathname.split('/').slice(-2, -1)[0]; // Витягуємо userId
+
+        if (!userId) {
+            return NextResponse.json({ error: 'User ID not provided' }, { status: 400 });
+        }
+
+        // Перевірка автентифікації
         const session = await getServerSession(authOptions);
         if (!session) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        // Get user ID from params
-        const { userId } = params;
-
-        // Check if user has access to this subscription
-        const currentUserId = (session.user as any).id;
-        const isAdmin = (session.user as any).role === 'admin';
+        // Перевіряємо доступ
+        const currentUserId = (session.user as User).id;
+        const isAdmin = (session.user as User).role === 'admin';
         if (userId !== currentUserId && !isAdmin) {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
 
-        // Parse the request body
+        // Парсимо body
         const { subscriptionId } = await request.json();
 
-        // Find the existing subscription
+        // Знаходимо поточну підписку користувача
         const existingSubscription = mockUserSubscriptions.find(sub => sub.userId === userId);
 
-        // Create the updated subscription
+        // Оновлення або створення нової підписки
         let updatedSubscription: UserSubscription;
         if (existingSubscription) {
-            // Update existing subscription
             updatedSubscription = {
                 ...existingSubscription,
                 subscriptionId,
                 status: 'active',
                 currentPeriodStart: new Date(),
-                currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days later
+                currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 днів
             };
         } else {
-            // Create new subscription
             updatedSubscription = {
                 id: `usub_${Date.now()}`,
                 userId,
                 subscriptionId,
                 status: 'active',
                 currentPeriodStart: new Date(),
-                currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days later
+                currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 днів
             };
         }
 
-        // In a real app, this would save to a database
-        // For our mock, we'll just return the updated subscription
         return NextResponse.json(updatedSubscription);
     } catch (error) {
         console.error('Error:', error);

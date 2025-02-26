@@ -19,7 +19,7 @@ export default function AdminPage() {
     const [isCreatingUser, setIsCreatingUser] = useState(false);
 
     // Check if user is admin
-    const isAdmin = (session?.user as any)?.role === 'admin';
+    const isAdmin = (session?.user as User)?.role === 'admin';
 
     useEffect(() => {
         // If not admin, redirect to dashboard

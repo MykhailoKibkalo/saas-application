@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { mockUsers } from '@/data/mock-users';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import {User} from "@/lib/types";
 
 export async function GET() {
     try {
@@ -12,7 +13,7 @@ export async function GET() {
         }
 
         // Get user ID from session
-        const userId = (session.user as any).id;
+        const userId = (session.user as User).id;
 
         // Find the current user
         const currentUser = mockUsers.find(user => user.id === userId);

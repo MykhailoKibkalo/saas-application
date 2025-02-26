@@ -6,7 +6,7 @@ import { PlanCard } from '@/components/billing/plan-card';
 import { SubscriptionDetails } from '@/components/billing/subscription-details';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useSession } from 'next-auth/react';
-import { Subscription, UserSubscription } from '@/lib/types';
+import {Subscription, User, UserSubscription} from '@/lib/types';
 import { mockSubscriptions, mockUserSubscriptions } from '@/data/mock-subscriptions';
 
 export default function BillingPage() {
@@ -14,9 +14,9 @@ export default function BillingPage() {
     const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
     const [userSubscription, setUserSubscription] = useState<UserSubscription | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [isChangingPlan, setIsChangingPlan] = useState(false);
+    const [, setIsChangingPlan] = useState(false);
 
-    const userId = (session?.user as any)?.id || '';
+    const userId = (session?.user as User)?.id || '';
 
     useEffect(() => {
         const fetchSubscriptionData = async () => {

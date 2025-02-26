@@ -58,8 +58,8 @@ export function BarChart({ title, description, chartData, height = 300 }: BarCha
                             },
                         },
                     },
-                    barPercentage: 0.7,
-                    categoryPercentage: 0.7,
+                    // barPercentage: 0.7,
+                    // categoryPercentage: 0.7,
                 },
             });
         }

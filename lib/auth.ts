@@ -2,6 +2,31 @@ import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { mockUsers } from '@/data/mock-users';
 
+declare module 'next-auth' {
+    interface User {
+        id: string;
+        name: string;
+        email: string;
+        role: 'user' | 'admin';
+    }
+
+    interface Session {
+        user: {
+            id: string;
+            name: string;
+            email: string;
+            role: 'user' | 'admin';
+        };
+    }
+}
+
+declare module 'next-auth/jwt' {
+    interface JWT {
+        id: string;
+        role: 'user' | 'admin';
+    }
+}
+
 export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({

@@ -12,7 +12,7 @@ export function WelcomeBanner({ userName }: WelcomeBannerProps) {
                 <div>
                     <h1 className="text-2xl font-bold">Welcome back, {userName}!</h1>
                     <p className="mt-1 text-primary-100">
-                        Here's what's happening with your projects today.
+                        Here is what is happening with your projects today.
                     </p>
                 </div>
                 <Button

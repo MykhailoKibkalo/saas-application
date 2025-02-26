@@ -54,7 +54,7 @@ export function UserTable({ users, onEdit, onDelete }: UserTableProps) {
                             <select
                                 className="py-2 pl-10 pr-4 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 appearance-none bg-white"
                                 value={filter}
-                                onChange={(e) => setFilter(e.target.value as any)}
+                                onChange={(e) => setFilter(e.target.value as 'all' | 'admin' | 'user')}
                             >
                                 <option value="all">All Users</option>
                                 <option value="admin">Admins</option>

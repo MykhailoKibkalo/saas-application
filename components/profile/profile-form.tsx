@@ -43,7 +43,8 @@ export function ProfileForm({ profile, userId }: ProfileFormProps) {
             setTimeout(() => {
                 setSuccess(false);
             }, 3000);
-        } catch (err) {
+        } catch (err: unknown) {
+            console.log(err);
             setError('An error occurred while updating your profile.');
         } finally {
             setIsLoading(false);

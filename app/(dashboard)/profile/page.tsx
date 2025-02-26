@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Header } from '@/components/layout/header';
 import { ProfileForm } from '@/components/profile/profile-form';
 import { useSession } from 'next-auth/react';
-import { Profile } from '@/lib/types';
+import {Profile, User} from '@/lib/types';
 import { mockProfiles } from '@/data/mock-users';
 
 export default function ProfilePage() {
@@ -12,7 +12,7 @@ export default function ProfilePage() {
     const [profile, setProfile] = useState<Profile | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    const userId = (session?.user as any)?.id || '';
+    const userId = (session?.user as User)?.id || '';
 
     useEffect(() => {
         const fetchProfile = async () => {

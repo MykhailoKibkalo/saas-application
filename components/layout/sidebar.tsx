@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { FiHome, FiUser, FiCreditCard, FiBarChart2, FiSettings, FiUsers, FiMenu, FiX } from 'react-icons/fi';
+import { FiHome, FiUser, FiCreditCard, FiBarChart2, FiUsers, FiMenu, FiX } from 'react-icons/fi';
 
 interface SidebarProps {
     className?: string;

@@ -35,7 +35,8 @@ export function UserActions({ user, onSave, onCancel, isCreating = false }: User
 
         try {
             await onSave(data);
-        } catch (err) {
+        } catch (err: unknown) {
+            console.log(err);
             setError('An error occurred while saving user data.');
         } finally {
             setIsLoading(false);

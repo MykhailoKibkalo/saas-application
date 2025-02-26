@@ -5,7 +5,7 @@ import { FiDownload, FiSearch } from 'react-icons/fi';
 interface DataTableProps {
     title: string;
     description?: string;
-    data: any[];
+    data: {product: string, revenue: string, customers: number, growth: string }[];
     columns: { key: string; label: string }[];
 }
 
@@ -62,7 +62,7 @@ export function DataTable({ title, description, data, columns }: DataTableProps)
                                         key={`${rowIndex}-${column.key}`}
                                         className="px-4 py-3 text-sm text-secondary-700"
                                     >
-                                        {row[column.key]}
+                                        {row[column.key as keyof {product: string, revenue: string, customers: number, growth: string }]}
                                     </td>
                                 ))}
                             </tr>

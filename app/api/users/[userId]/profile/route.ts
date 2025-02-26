@@ -2,30 +2,32 @@ import { NextResponse } from 'next/server';
 import { mockProfiles } from '@/data/mock-users';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { Profile } from '@/lib/types';
+import { Profile, User } from '@/lib/types';
 
-export async function GET(
-    request: Request,
-    { params }: { params: { userId: string } }
-) {
+export async function GET(request: Request) {
     try {
-        // Check authentication
+        // Отримуємо userId з URL
+        const { pathname } = new URL(request.url);
+        const userId = pathname.split('/').slice(-2, -1)[0]; // Витягуємо userId
+
+        if (!userId) {
+            return NextResponse.json({ error: 'User ID not provided' }, { status: 400 });
+        }
+
+        // Перевірка автентифікації
         const session = await getServerSession(authOptions);
         if (!session) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        // Get user ID from params
-        const { userId } = params;
-
-        // Check if user has access to this profile
-        const currentUserId = (session.user as any).id;
-        const isAdmin = (session.user as any).role === 'admin';
+        // Перевіряємо доступ
+        const currentUserId = (session.user as User).id;
+        const isAdmin = (session.user as User).role === 'admin';
         if (userId !== currentUserId && !isAdmin) {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
 
-        // Find the user profile
+        // Отримуємо профіль користувача
         const profile = mockProfiles[userId];
         if (!profile) {
             return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
@@ -38,32 +40,31 @@ export async function GET(
     }
 }
 
-export async function PUT(
-    request: Request,
-    { params }: { params: { userId: string } }
-) {
+export async function PUT(request: Request) {
     try {
-        // Check authentication
+        // Отримуємо userId з URL
+        const { pathname } = new URL(request.url);
+        const userId = pathname.split('/').slice(-2, -1)[0]; // Витягуємо userId
+
+        if (!userId) {
+            return NextResponse.json({ error: 'User ID not provided' }, { status: 400 });
+        }
+
+        // Перевірка автентифікації
         const session = await getServerSession(authOptions);
         if (!session) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        // Get user ID from params
-        const { userId } = params;
-
-        // Check if user has access to this profile
-        const currentUserId = (session.user as any).id;
-        const isAdmin = (session.user as any).role === 'admin';
+        // Перевіряємо доступ
+        const currentUserId = (session.user as User).id;
+        const isAdmin = (session.user as User).role === 'admin';
         if (userId !== currentUserId && !isAdmin) {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
 
-        // Parse the request body
+        // Отримуємо та оновлюємо дані профілю
         const profileData: Partial<Profile> = await request.json();
-
-        // Update the profile (in a real app, this would save to a database)
-        // For our mock, we'll just return the updated profile
         const currentProfile = mockProfiles[userId] || { userId };
         const updatedProfile = { ...currentProfile, ...profileData };
 

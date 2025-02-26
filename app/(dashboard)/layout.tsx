@@ -3,8 +3,8 @@
 import {Sidebar} from '@/components/layout/sidebar';
 import {Footer} from '@/components/layout/footer';
 import {useSession} from 'next-auth/react';
-import {redirect} from 'next/navigation';
 import {useEffect, useState} from 'react';
+import {User} from "@/lib/types";
 
 export default function DashboardLayout({
                                             children,
@@ -40,7 +40,7 @@ export default function DashboardLayout({
                 user={{
                     name: session?.user?.name || 'User',
                     email: session?.user?.email || 'user@example.com',
-                    role: (session?.user as any)?.role || 'user',
+                    role: (session?.user as User)?.role || 'user',
                 }}
             />
             <div className="flex-1 flex flex-col overflow-hidden">
